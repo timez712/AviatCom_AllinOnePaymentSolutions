@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ReferencePath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\dotnet\</ReferencePath>
+    <ProjectView>ProjectFiles</ProjectView>
+    <PublishUrlHistory>C:\inetpub\wwwroot\WebHost\AllOnePaymentSolutions\|E:\Developments\WindowBase\AvicatCom_AllInOnePaymentSolutions\Publish\|C:\inetpub\wwwroot\WebSite\AllInOnePaymentSolutions\|D:\Developments\NET Developments\AvicatCom_AllInOnePaymentSolutions\Installation\|D:\WebSite\AllInOnePaymentSolutions\</PublishUrlHistory>
+    <InstallUrlHistory>http://321ordernow.theworkpc.com:48168/|http://321ordernow.ddns.net:48168/|http://timez.ddns.net:48168/|http://timez.ddns.net:55555/|http://timez.ddns.net:58168/</InstallUrlHistory>
+    <SupportUrlHistory />
+    <UpdateUrlHistory />
+    <BootstrapperUrlHistory />
+    <ErrorReportUrlHistory />
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
+  </PropertyGroup>
+  <PropertyGroup>
+    <EnableSecurityDebugging>false</EnableSecurityDebugging>
+  </PropertyGroup>
+</Project>

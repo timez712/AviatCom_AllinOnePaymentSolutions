@@ -1,0 +1,5 @@
+﻿Catch ex As Exception
+    MessageBox.Show("UpdateItem Error" & vbNewLine & vbNewLine & ex.Message)
+    ActionLog(Me.Name, iMerchantID, "MerchantService", "", "", "Error - Modifing Merchant Service" & vbNewLine & ex.Message, StrEmployeeInformation.Location, StrEmployeeInformation.EmployeeID, StrEmployeeInformation.ComputerName)
+    LogToSystemEvent(gsApplicationClientID, Me.Name, "UpdateItem - " & Chr(13) & ex.Message & Chr(13) & Chr(13) & ex.ToString, "Error")
+End Try

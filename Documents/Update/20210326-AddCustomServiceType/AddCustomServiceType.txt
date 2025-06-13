@@ -1,0 +1,106 @@
+INSERT INTO [dbo].[tbSelectOption]
+           ([Type]
+           ,[Selection]
+           ,[SelectionDescription]
+           ,[SelectionDispalySort])
+     VALUES
+           (
+				'ServiceType'
+				,'Online Order'
+				,'Online Order'
+				,2
+		   )
+
+INSERT INTO [dbo].[tbSelectOption]
+           ([Type]
+           ,[Selection]
+           ,[SelectionDescription]
+           ,[SelectionDispalySort])
+     VALUES
+           (
+				'ServiceType'
+				,'POS'
+				,'POS'
+				,1
+		   )
+INSERT INTO [dbo].[tbSelectOption]
+           ([Type]
+           ,[Selection]
+           ,[SelectionDescription]
+           ,[SelectionDispalySort])
+     VALUES
+           (
+				'ServiceType'
+				,'Terminal'
+				,'Terminal'
+				,0
+		   )
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+USE [AllInOnePaymentSolutionsdb]
+GO
+
+/****** Object:  Table [dbo].[tbMerchantServices]    Script Date: 4/17/2021 8:40:55 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbMerchantServices](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[MerchantID] [int] NOT NULL,
+	[MerchantService] [nvarchar](100) NOT NULL,
+	[MerchantServiceCode] [nvarchar](100) NOT NULL,
+	[Remarks] [nvarchar](100) NULL,
+	[isActive] [bit] NOT NULL,
+	[ActiveDate] [date] NULL,
+	[ExpiredDate] [date] NULL,
+	[LastUpdateEmployeeID] [int] NOT NULL,
+	[CreateTime] [datetime] NOT NULL,
+	[LastUpdateTime] [datetime] NOT NULL,
+ CONSTRAINT [PK_tbMerchantServices] PRIMARY KEY NONCLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tbMerchantServices] ADD  CONSTRAINT [DF_tbMerchantServices_isActive]  DEFAULT ((1)) FOR [isActive]
+GO
+
+ALTER TABLE [dbo].[tbMerchantServices] ADD  CONSTRAINT [DF_tbMerchantServices_CreateTime]  DEFAULT (getdate()) FOR [CreateTime]
+GO
+
+ALTER TABLE [dbo].[tbMerchantServices] ADD  CONSTRAINT [DF_tbMerchantServices_LastUpdateTime]  DEFAULT (getdate()) FOR [LastUpdateTime]
+GO
+
+
+--$$$$$$$$$$$$$$$$$$$$$$$$$$$ Add New Module for payment summary
+
+CREATE DEFINER=`AviatCom`@`%` PROCEDURE `spReport_GetAllActiveRestaurantPaymentSummary`(
+dtDateTimeFrom TimeStamp,
+dtDateTimeTo TimeStamp
+)
+BEGIN
+
+	SELECT  tbCompanyInfo.CompanyName ,
+			tbCompanyInfo.BasicCharge,
+            tbCompanyInfo.MonthlyMin,
+			COUNT(tbCustomerOrderHistory.OrderNumber) AS TotalOrders,
+			SUM(tbCustomerOrderHistory.CompanyCommissionAmount) AS TotalCommission  
+	FROM tbCompanyInfo 
+	LEFT JOIN tbCustomerOrderHistory
+		ON tbCompanyInfo.CompanyID = tbCustomerOrderHistory.CompanyID
+		AND tbCustomerOrderHistory.Status = 'COMPLETED'
+		AND tbCustomerOrderHistory.TimeStamp >= dtDateTimeFrom
+		AND tbCustomerOrderHistory.TimeStamp < dtDateTimeTo
+	WHERE tbCompanyInfo.isInActive = 0
+	AND tbCompanyInfo.PrintInvoice <> 0 
+	GROUP BY tbCompanyInfo.CompanyName,
+			tbCompanyInfo.BasicCharge,
+            tbCompanyInfo.MonthlyMin
+	ORDER BY  tbCompanyInfo.CompanyName;
+    
+END
